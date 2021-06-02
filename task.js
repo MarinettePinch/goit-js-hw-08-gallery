@@ -104,6 +104,36 @@ function onTagertImageClick(event) {
     console.log(rightAlt);
     console.log(leftAlt);
 
+    function scrollRightGalleryImages() {
+    
+        refs.lightboxImage.setAttribute('src', rightUrl);
+        refs.lightboxImage.setAttribute('alt', rightAlt);
+    }
+    
+    function scrollLeftGalleryImages() {
+   
+        refs.lightboxImage.setAttribute('src', leftUrl);
+        refs.lightboxImage.setAttribute('alt', leftAlt); 
+    }
+
+    function onRightPress (event) {
+        const KEY_CODE = event.code;
+    
+        if (KEY_CODE !== 'ArrowRight') return;
+    
+        console.log(KEY_CODE);
+        scrollRightGalleryImages()
+    }
+    
+    function onLeftPress (event) {
+        const KEY_CODE = event.code;
+    
+        if (KEY_CODE !== 'ArrowLeft') return;
+    
+        console.log(KEY_CODE);
+        scrollLeftGalleryImages()
+    }
+
     
 }
 
@@ -116,26 +146,10 @@ function closeModal() {
     refs.lightboxOverlay.removeEventListener('click', onLightboxOverlayClick);
 
     window.removeEventListener('keydown', onEscPress);
-    window.removeEventListener('keydown', onRightPress);
-    window.removeEventListener('keydown', onLeftPress);
+    // window.removeEventListener('keydown', onRightPress);
+    // window.removeEventListener('keydown', onLeftPress);
 }
 
-function scrollRightGalleryImages(event) {
-    // console.log(event.target);
-    // const url = event.target.parentNode.getAttribute('href');
-    // const alt = event.target.getAttribute('alt');
-
-    // refs.lightboxImage.setAttribute('src', url);
-    // refs.lightboxImage.setAttribute('alt', alt);
-}
-
-function scrollLeftGalleryImages() {
-    // const url = event.target.parentNode.getAttribute('href');
-    // const alt = event.target.getAttribute('alt');
-
-    // refs.lightboxImage.setAttribute('src', url);
-    // refs.lightboxImage.setAttribute('alt', alt); 
-}
 
 
 function onCloseModalBtnClick() {
@@ -157,22 +171,6 @@ function onEscPress (event) {
     closeModal();
 }
 
-function onRightPress (event) {
-    const KEY_CODE = event.code;
 
-    if (KEY_CODE !== 'ArrowRight') return;
-
-    console.log(KEY_CODE);
-    scrollRightGalleryImages()
-}
-
-function onLeftPress (event) {
-    const KEY_CODE = event.code;
-
-    if (KEY_CODE !== 'ArrowLeft') return;
-
-    console.log(KEY_CODE);
-    scrollLeftGalleryImages()
-}
 
 
