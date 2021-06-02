@@ -20,21 +20,26 @@
 // Это необходимо для того, чтобы при следующем 
 // открытии модального окна, пока грузится изображение, мы не видели предыдущее.
 
+
+// Следующий функционал не обязателен при сдаче задания, 
+// но будет хорошей практикой по работе с событиями.
+
+// Закрытие модального окна по клику на div.lightbox__overlay.
+// Закрытие модального окна по нажатию клавиши ESC.
+// Пролистывание изображений галереи в открытом модальном окне 
+// клавишами "влево" и "вправо".
+
 import gallery from "./gallery-items.js";
 
-console.log(gallery);
 
 const refs = {
     ulGallery: document.querySelector('.js-gallery'),
     lightbox: document.querySelector('.js-lightbox'),
+    lightboxOverlay: document.querySelector('.js-lightbox .lightbox__overlay'),
     lightboxImage: document.querySelector('.js-lightbox .lightbox__image'),
-    lightboxCloseBtn: document.querySelector('.js-lightbox button[data-action="close-lightbox"]'),
+    modalCloseBtn: document.querySelector('.js-lightbox button[data-action="close-lightbox"]'),
 };
 
-// console.log(refs.ulGallery);
-// console.log(refs.lightbox);
-// console.log(refs.lightboxImage);
-// console.log(refs.lightboxCloseBtn);
 
 const makeItemsGallery = (({preview, original, description}) => {
     const item = document.createElement('li');
@@ -42,6 +47,7 @@ const makeItemsGallery = (({preview, original, description}) => {
 
     const link = document.createElement('a');
     link.classList.add("gallery__link");
+    link.setAttribute('href', original);
 
     const image = document.createElement('img');
     image.setAttribute('src', preview);
@@ -55,6 +61,118 @@ const makeItemsGallery = (({preview, original, description}) => {
 
 const itemsGallery = gallery.map(makeItemsGallery);
 
-// console.log(...itemsGallery);
 
 refs.ulGallery.append(...itemsGallery);
+
+refs.ulGallery.addEventListener('click', onTagertImageClick);
+
+function onTagertImageClick(event) {
+    event.preventDefault();
+
+    if (event.target === event.currentTarget) return; 
+
+    const url = event.target.parentNode.getAttribute('href');
+    const alt = event.target.getAttribute('alt');
+
+    refs.lightbox.classList.add("is-open");
+    refs.lightboxImage.setAttribute('src', url);
+    refs.lightboxImage.setAttribute('alt', alt);
+
+    refs.modalCloseBtn.addEventListener('click', onCloseModalBtnClick);
+
+    refs.lightboxOverlay.addEventListener('click', onLightboxOverlayClick);
+
+    window.addEventListener('keydown', onEscPress);
+    window.addEventListener('keydown', onRightPress);
+    window.addEventListener('keydown', onLeftPress);
+
+    
+    const nextLi = event.target.parentNode.parentNode.nextSibling;
+    const previousLi = event.target.parentNode.parentNode.previousSibling;
+
+    if (nextLi === null) return;
+    if (previousLi === null) return;
+
+    const rightUrl = nextLi.firstElementChild.getAttribute('href');
+    const leftUrl = previousLi.firstElementChild.getAttribute('href');
+
+    const rightAlt = nextLi.firstElementChild.firstElementChild.getAttribute('alt');
+    const leftAlt = previousLi.firstElementChild.firstElementChild.getAttribute('alt');
+
+    console.log(rightUrl);
+    console.log(leftUrl);
+    console.log(rightAlt);
+    console.log(leftAlt);
+
+    
+}
+
+function closeModal() {
+    refs.lightbox.classList.remove("is-open");
+    refs.lightboxImage.removeAttribute('src');
+    refs.lightboxImage.removeAttribute('alt');
+
+    refs.modalCloseBtn.removeEventListener('click', onCloseModalBtnClick);
+    refs.lightboxOverlay.removeEventListener('click', onLightboxOverlayClick);
+
+    window.removeEventListener('keydown', onEscPress);
+    window.removeEventListener('keydown', onRightPress);
+    window.removeEventListener('keydown', onLeftPress);
+}
+
+function scrollRightGalleryImages(event) {
+    // console.log(event.target);
+    // const url = event.target.parentNode.getAttribute('href');
+    // const alt = event.target.getAttribute('alt');
+
+    // refs.lightboxImage.setAttribute('src', url);
+    // refs.lightboxImage.setAttribute('alt', alt);
+}
+
+function scrollLeftGalleryImages() {
+    // const url = event.target.parentNode.getAttribute('href');
+    // const alt = event.target.getAttribute('alt');
+
+    // refs.lightboxImage.setAttribute('src', url);
+    // refs.lightboxImage.setAttribute('alt', alt); 
+}
+
+
+function onCloseModalBtnClick() {
+    closeModal();
+}
+
+function onLightboxOverlayClick (event) {
+    if (event.target !== event.currentTarget) return;
+   
+    closeModal();
+
+}
+
+function onEscPress (event) {
+    const KEY_CODE = event.code;
+
+    if (KEY_CODE !== 'Escape') return;
+
+    closeModal();
+}
+
+function onRightPress (event) {
+    const KEY_CODE = event.code;
+
+    if (KEY_CODE !== 'ArrowRight') return;
+
+    console.log(KEY_CODE);
+    scrollRightGalleryImages()
+}
+
+function onLeftPress (event) {
+    const KEY_CODE = event.code;
+
+    if (KEY_CODE !== 'ArrowLeft') return;
+
+    console.log(KEY_CODE);
+    scrollLeftGalleryImages()
+}
+
+
