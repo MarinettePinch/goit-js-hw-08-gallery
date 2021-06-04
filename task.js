@@ -83,57 +83,9 @@ function onTagertImageClick(event) {
     refs.lightboxOverlay.addEventListener('click', onLightboxOverlayClick);
 
     window.addEventListener('keydown', onEscPress);
-    window.addEventListener('keydown', onRightPress);
-    window.addEventListener('keydown', onLeftPress);
 
-    
-    const nextLi = event.target.parentNode.parentNode.nextSibling;
-    const previousLi = event.target.parentNode.parentNode.previousSibling;
-
-    if (nextLi === null) return;
-    if (previousLi === null) return;
-
-    const rightUrl = nextLi.firstElementChild.getAttribute('href');
-    const leftUrl = previousLi.firstElementChild.getAttribute('href');
-
-    const rightAlt = nextLi.firstElementChild.firstElementChild.getAttribute('alt');
-    const leftAlt = previousLi.firstElementChild.firstElementChild.getAttribute('alt');
-
-    console.log(rightUrl);
-    console.log(leftUrl);
-    console.log(rightAlt);
-    console.log(leftAlt);
-
-    function scrollRightGalleryImages() {
-    
-        refs.lightboxImage.setAttribute('src', rightUrl);
-        refs.lightboxImage.setAttribute('alt', rightAlt);
-    }
-    
-    function scrollLeftGalleryImages() {
-   
-        refs.lightboxImage.setAttribute('src', leftUrl);
-        refs.lightboxImage.setAttribute('alt', leftAlt); 
-    }
-
-    function onRightPress (event) {
-        const KEY_CODE = event.code;
-    
-        if (KEY_CODE !== 'ArrowRight') return;
-    
-        console.log(KEY_CODE);
-        scrollRightGalleryImages()
-    }
-    
-    function onLeftPress (event) {
-        const KEY_CODE = event.code;
-    
-        if (KEY_CODE !== 'ArrowLeft') return;
-    
-        console.log(KEY_CODE);
-        scrollLeftGalleryImages()
-    }
-
+    // window.addEventListener('keydown', onRightPress);
+    // window.addEventListener('keydown', onLeftPress);
     
 }
 
@@ -146,10 +98,10 @@ function closeModal() {
     refs.lightboxOverlay.removeEventListener('click', onLightboxOverlayClick);
 
     window.removeEventListener('keydown', onEscPress);
+
     // window.removeEventListener('keydown', onRightPress);
     // window.removeEventListener('keydown', onLeftPress);
 }
-
 
 
 function onCloseModalBtnClick() {
@@ -158,9 +110,7 @@ function onCloseModalBtnClick() {
 
 function onLightboxOverlayClick (event) {
     if (event.target !== event.currentTarget) return;
-   
-    closeModal();
-
+     closeModal();
 }
 
 function onEscPress (event) {
@@ -171,6 +121,21 @@ function onEscPress (event) {
     closeModal();
 }
 
+// function onRightPress (event) {
+//     const KEY_CODE = event.code;
 
+//     if (KEY_CODE !== 'ArrowRight') return;
+
+//     console.log(KEY_CODE);
+// }
+
+// function onLeftPress (event) {
+//     const KEY_CODE = event.code;
+
+//     if (KEY_CODE !== 'ArrowLeft') return;
+
+//     console.log(KEY_CODE);
+
+// }
 
 
