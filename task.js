@@ -78,9 +78,9 @@ function onTagertImageClick(event) {
     refs.lightboxImage.setAttribute('src', url);
     refs.lightboxImage.setAttribute('alt', alt);
 
-    refs.modalCloseBtn.addEventListener('click', onCloseModalBtnClick);
+    refs.modalCloseBtn.addEventListener('click', closeModal);
 
-    refs.lightboxOverlay.addEventListener('click', onLightboxOverlayClick);
+    refs.lightboxOverlay.addEventListener('click', closeModal);
 
     window.addEventListener('keydown', onEscPress);
 
@@ -94,8 +94,8 @@ function closeModal() {
     refs.lightboxImage.removeAttribute('src');
     refs.lightboxImage.removeAttribute('alt');
 
-    refs.modalCloseBtn.removeEventListener('click', onCloseModalBtnClick);
-    refs.lightboxOverlay.removeEventListener('click', onLightboxOverlayClick);
+    refs.modalCloseBtn.removeEventListener('click', closeModal);
+    refs.lightboxOverlay.removeEventListener('click', closeModal);
 
     window.removeEventListener('keydown', onEscPress);
 
@@ -103,15 +103,6 @@ function closeModal() {
     // window.removeEventListener('keydown', onLeftPress);
 }
 
-
-function onCloseModalBtnClick() {
-    closeModal();
-}
-
-function onLightboxOverlayClick (event) {
-    if (event.target !== event.currentTarget) return;
-     closeModal();
-}
 
 function onEscPress (event) {
     const KEY_CODE = event.code;
