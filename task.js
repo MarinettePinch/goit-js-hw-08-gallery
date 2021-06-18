@@ -61,6 +61,9 @@ const makeItemsGallery = (({preview, original, description}) => {
 
 const itemsGallery = gallery.map(makeItemsGallery);
 
+const urls = gallery.map(image => image.original);
+const alts = gallery.map(image => image.description);
+
 
 refs.ulGallery.append(...itemsGallery);
 
@@ -84,8 +87,8 @@ function onTagertImageClick(event) {
 
     window.addEventListener('keydown', onEscPress);
 
-    // window.addEventListener('keydown', onRightPress);
-    // window.addEventListener('keydown', onLeftPress);
+    window.addEventListener('keydown', onRightPress);
+    window.addEventListener('keydown', onLeftPress);
     
 }
 
@@ -99,8 +102,8 @@ function closeModal() {
 
     window.removeEventListener('keydown', onEscPress);
 
-    // window.removeEventListener('keydown', onRightPress);
-    // window.removeEventListener('keydown', onLeftPress);
+    window.removeEventListener('keydown', onRightPress);
+    window.removeEventListener('keydown', onLeftPress);
 }
 
 
@@ -112,21 +115,45 @@ function onEscPress (event) {
     closeModal();
 }
 
-// function onRightPress (event) {
-//     const KEY_CODE = event.code;
+function onRightPress (event) {
+    const KEY_CODE = event.code;
 
-//     if (KEY_CODE !== 'ArrowRight') return;
+    if (KEY_CODE !== 'ArrowRight') return;
 
-//     console.log(KEY_CODE);
-// }
+    const url = refs.lightboxImage.getAttribute('src');
 
-// function onLeftPress (event) {
-//     const KEY_CODE = event.code;
+    const currentIndex = urls.indexOf(url);
 
-//     if (KEY_CODE !== 'ArrowLeft') return;
+    if (currentIndex === urls.length-1) {
 
-//     console.log(KEY_CODE);
+        refs.lightboxImage.setAttribute('src', urls[0]);
+        refs.lightboxImage.setAttribute('alt', alts[0]);
+    } else {
+        refs.lightboxImage.setAttribute('src', urls[currentIndex + 1]);
+        refs.lightboxImage.setAttribute('alt', alts[currentIndex + 1]);
+    }
 
-// }
+}
+
+function onLeftPress (event) {
+    const KEY_CODE = event.code;
+
+    if (KEY_CODE !== 'ArrowLeft') return;
+
+    const url = refs.lightboxImage.getAttribute('src');
+
+    const currentIndex = urls.indexOf(url);
+
+
+    if (currentIndex === 0) {
+
+        refs.lightboxImage.setAttribute('src', urls[urls.length-1]);
+        refs.lightboxImage.setAttribute('alt', alts[urls.length-1]);
+    } else {
+        refs.lightboxImage.setAttribute('src', urls[currentIndex - 1]);
+        refs.lightboxImage.setAttribute('alt', alts[currentIndex - 1]);
+    }
+
+}
 
 
